@@ -1,6 +1,6 @@
 # Cineworld cinema listings watcher
 
-See also: upcoming blog post!
+Read the accompanying blog post: [Practical Automation: Cinema listings to my inbox](https://neilstudd.ghost.io/2017/05/22/practical-automation-cinema-listings-to-my-inbox/)
 
 ![Example output](http://i.imgur.com/RkWSyBf.png)
 
