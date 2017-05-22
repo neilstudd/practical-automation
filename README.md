@@ -4,7 +4,7 @@ Within this repository, you'll find:
 
 ## Work tools
 
-* [JIRA QuickJump](https://github.com/neilstudd/practical-automation/tree/master/jira-quickjump) - A Windows script which can be launched with a keyboard shortcut to allow for custom querying of one (or more) JIRA repositories.
+* **[JIRA QuickJump](https://github.com/neilstudd/practical-automation/tree/master/jira-quickjump)** - A Windows script which can be launched with a keyboard shortcut to allow for custom querying of one (or more) JIRA repositories.
 
 ## Non-work projects
 
