@@ -18,7 +18,7 @@ if(resetStartDate)
     }
 
 var targetDate = new Date(storage.local.lastSuccess);
-var startDateInMs = new Date(storage.local.lastSuccess).getTime();
+var startDateInMs = targetDate.getTime();
 
 console.log("Checking whether films have been announced for " + targetDate + "...");
 
