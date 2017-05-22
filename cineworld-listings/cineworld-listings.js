@@ -6,7 +6,7 @@ var http = require('http');
 // ------------------------------------------------------------------
 var cinemaId = 1010861;
 var resetStartDate = false; // Set this to 'true' to change start date
-var emailRecipient = "scriptr@neilstudd.com";
+var emailRecipient = "your-email-address@example.org";
 var emailSubject = "Next week's Milton Keynes listings available!";
 // ------------------------------------------------------------------
 

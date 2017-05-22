@@ -26,7 +26,7 @@ if (filmList != "")
   {
    var mailBody = "<b>New Unlimited screening detected!</b><br/><br/>" + filmList;
    var emailConfig = {
-  	"to": "scriptr@neilstudd.com",
+  	"to": "your-email-address@example.org",
   	"fromName": "Cineworld Alerts",
   	"subject": "New Unlimited screening detected!",
   	"body": mailBody
