@@ -36,6 +36,7 @@ See also: upcoming blog post!
 
 ## How I could improve the script in the future
 
+* Change the "reset" code to just automatically detect the next Friday, for easier initial setup
 * Display showtimes within the email (though this duplicates a feature which is already available through the Cineworld website)
 * Link each film to its relevant page on the Cineworld website
 * Filter-out films that I've already seen (sync with Letterboxd watched movies, or build own system for checking them off)
