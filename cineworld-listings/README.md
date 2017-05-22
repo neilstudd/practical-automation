@@ -2,6 +2,8 @@
 
 See also: upcoming blog post!
 
+![Example output](http://i.imgur.com/RkWSyBf.png)
+
 ## My problem
 
 * On average I watch 2-3 films per week at Cineworld (thanks, Cineworld Unlimited card!)
