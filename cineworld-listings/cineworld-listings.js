@@ -1,6 +1,6 @@
 var http = require('http');
 
-var MILLISECONDS_IN_ONE_DAY = 86400000;
+var MILLISECONDS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
 
 // ------------------------------------------------------------------
 //  Customise the following to control which cinema you're watching,
