@@ -1,5 +1,7 @@
 var http = require('http');
 
+var MILLISECONDS_IN_ONE_DAY = 86400000;
+
 // ------------------------------------------------------------------
 //  Customise the following to control which cinema you're watching,
 //  and who gets the alert!
@@ -12,33 +14,41 @@ var emailSubject = "Next week's Milton Keynes listings available!";
 
 if(resetStartDate)
     {       
-        storage.local.lastSuccess = "Sat May 06 2017 07:00:00 GMT-0000";
+        storage.local.lastSuccess = "Fri May 26 2017 07:00:00 GMT-0000";
     }
 
 var targetDate = new Date(storage.local.lastSuccess);
+var startDateInMs = new Date(storage.local.lastSuccess).getTime();
+
 console.log("Checking whether films have been announced for " + targetDate + "...");
 
-var dateInMs = new Date(storage.local.lastSuccess).getTime();
-
-var requestConfig = {
-  url: 'https://www.cineworld.co.uk/pgm-site?si=' + cinemaId + '&max=365&bd=' + dateInMs + '&attrs=2D%2C3D%2CIMAX%2CViP%2CVIP%2CDBOX%2C4DX%2CM4J%2CSS'
-};
-var response = http.request(requestConfig);
-
-filmList = "";
-films = JSON.parse(response.body);
-
-// Assume we need more than three films for a full day's programme
-// (as there might already be a couple announced for preorders or special events)
-if(films.length>3)
+// Only proceed if films have been announced
+if(hasListings(cinemaId, startDateInMs))
     {
-        // Compile film list and send email
-        for(i=0; i<films.length; i++)
-  			{
-    			filmList +=films[i].n + '<br/>';
-  			}
+        var filmList = [];
+        dateToCheck = startDateInMs;
         
-			var mailBody = "<b>New listings found for " + targetDate + ":</b><br/><br/>" + filmList;   		
+        // Go through the seven days of listings, building list of films.
+        for(day=1;day<=7;day++)
+            {
+                addFilmsToList(cinemaId, dateToCheck);
+                dateToCheck+=MILLISECONDS_IN_ONE_DAY;
+            }
+        
+        // Dedupe and sort the film list
+        uniqueFilms = filmList.filter(function(item, pos) {
+  			  return filmList.indexOf(item) == pos;
+		})       
+        uniqueFilms.sort();
+        
+        // Convert list to HTML
+        var emailFilmList = "";        
+        for(i=0; i<uniqueFilms.length; i++)
+  			{
+    			emailFilmList += uniqueFilms[i] + '<br/>';
+  			}      
+        
+		var mailBody = "<b>Here are all of next week's films, check website for date/times!</b><br/><br/>" + emailFilmList;   		
         var emailConfig = {
   			"to": emailRecipient,
   			"fromName": "Cineworld Alerts",
@@ -46,7 +56,7 @@ if(films.length>3)
   			"body": mailBody
    		};
         
-        var date = new Date(dateInMs);
+        var date = new Date(startDateInMs);
         storage.local.lastSuccess = date.setDate(date.getDate() + 7);
         var targetDate = new Date(storage.local.lastSuccess);
 		console.log("Mail sent, now awaiting announcements for " + targetDate);
@@ -58,3 +68,28 @@ else
         var targetDate = new Date(storage.local.lastSuccess);
         return "Still awaiting announcements for " + targetDate;
     }
+
+// Add the chosen day's films to the list of films
+function addFilmsToList(cinemaId, dateToCheck) {
+    films = getFilms(cinemaId, dateToCheck);
+    for(i=0; i<films.length; i++)
+       {
+           filmList.push(films[i].n);
+       }
+}
+
+// Consider that a date has listings if there are more than 3 films showing 
+// (as there might already be a couple announced for preorders or special events)
+function hasListings(cinemaId, dateToCheck) {
+    films = getFilms(cinemaId, dateToCheck); 
+    return films.length > 3;
+}
+
+// Helper for retrieving film listings
+function getFilms(cinemaId, dateToCheck) {
+    var requestConfig = {
+  		url: 'https://www.cineworld.co.uk/pgm-site?si=' + cinemaId + '&max=365&bd=' + dateToCheck + '&attrs=2D%2C3D%2CIMAX%2CViP%2CVIP%2CDBOX%2C4DX%2CM4J%2CSS'
+	};
+	var response = http.request(requestConfig);
+    return JSON.parse(response.body);   
+}
