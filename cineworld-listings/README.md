@@ -24,9 +24,7 @@ Read the accompanying blog post: [Practical Automation: Cinema listings to my in
 1. Paste the contents of `cineworld-listings.js` into a new Scriptr script
 1. Locate the ID for the cinema that you wish to monitor. This will be a seven-digit number beginning with 101; you can locate the ID by looking at the source of the "Choose a cinema" dropdown on the Cineworld website.
 1. Update the variables in lines 9-12 of the cineworld-listings script, to reflect the cinema you're interested in, and where you want to deliver the email.
-1. On first execution, set `resetStartDate` to `true`, and update line 17 to set `storage.local.lastSuccess` to the next upcoming Friday.
 1. Save the script, and run; the console will either indicate it's delivered an email, or tell you that the listings aren't available yet.
-1. Set `resetStartDate` to false (the `lastSuccess` date will continue to update itself from now on)
 1. Use Scriptr's "Schedule" menu to configure how frequently you want the script to run. For example: "Run every hour at 0, 15, 30, 45 minute(s) past the hour" will run the script every 15 minutes.
 
 ## Major iterations so far
@@ -36,7 +34,6 @@ Read the accompanying blog post: [Practical Automation: Cinema listings to my in
 
 ## How I could improve the script in the future
 
-* Change the "reset" code to just automatically detect the next Friday, for easier initial setup
 * Display showtimes within the email (though this duplicates a feature which is already available through the Cineworld website)
 * Link each film to its relevant page on the Cineworld website
 * Filter-out films that I've already seen (sync with Letterboxd watched movies, or build own system for checking them off)

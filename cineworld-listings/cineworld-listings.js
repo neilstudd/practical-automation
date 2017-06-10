@@ -7,14 +7,14 @@ var MILLISECONDS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
 //  and who gets the alert!
 // ------------------------------------------------------------------
 var cinemaId = 1010861;
-var resetStartDate = false; // Set this to 'true' to change start date
 var emailRecipient = "your-email-address@example.org";
 var emailSubject = "Next week's Milton Keynes listings available!";
+var resetStartDate = false; // Set this to 'true' if you ever need to reset start date
 // ------------------------------------------------------------------
 
-if(resetStartDate)
+if(resetStartDate || !storage.local.lastSuccess)
     {       
-        storage.local.lastSuccess = "Fri May 26 2017 07:00:00 GMT-0000";
+        storage.local.lastSuccess = getNextFriday();
     }
 
 var targetDate = new Date(storage.local.lastSuccess);
@@ -57,7 +57,7 @@ if(hasListings(cinemaId, startDateInMs))
    		};
         
         var date = new Date(startDateInMs);
-        storage.local.lastSuccess = date.setDate(date.getDate() + 7);
+        storage.local.lastSuccess = date.setDate(date.getDate() + 7).setHours(5,0,0,0);
         var targetDate = new Date(storage.local.lastSuccess);
 		console.log("Mail sent, now awaiting announcements for " + targetDate);
         
@@ -92,4 +92,13 @@ function getFilms(cinemaId, dateToCheck) {
 	};
 	var response = http.request(requestConfig);
     return JSON.parse(response.body);   
+}
+
+// Work out next Friday, for reset purposes
+function getNextFriday() {        
+	var date = new Date();
+    var resultDate = new Date(date.getTime());
+    resultDate.setDate(date.getDate() + (12 - date.getDay()) % 7);
+    resultDate.setHours(5,0,0,0); // 5am next Friday
+    return resultDate;    
 }
