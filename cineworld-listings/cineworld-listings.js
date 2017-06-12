@@ -57,7 +57,7 @@ if(hasListings(cinemaId, startDateInMs))
    		};
         
         var date = new Date(startDateInMs);
-        storage.local.lastSuccess = date.setDate(date.getDate() + 7).setHours(5,0,0,0);
+        storage.local.lastSuccess = date.setDate(date.getDate() + 7);
         var targetDate = new Date(storage.local.lastSuccess);
 		console.log("Mail sent, now awaiting announcements for " + targetDate);
         
