@@ -11,3 +11,4 @@ Within this repository, you'll find:
 
 * **[Cineworld cinema listings watcher](https://github.com/neilstudd/practical-automation/tree/master/cineworld-listings)** - Get an email when new showtimes are announced for your local cinema.
 * **[Cineworld Unlimited Preview announcement listener](https://github.com/neilstudd/practical-automation/tree/master/cineworld-unlimited)** - Get an email when a new Unlimited Preview screening goes on sale.
+* **[Dictionary Searches](https://github.com/neilstudd/practical-automation/tree/master/dictionary-searches)** - Iterate through a dictionary and return all words that match a particular pattern (e.g. all words that can be made just using letters on the top row of the keyboard).
