@@ -1,4 +1,5 @@
 import os
+import urllib.request
 
 dictionary_file = "words_alpha.txt"
 lowercase_file = "lowercase_words.csv"
@@ -22,6 +23,11 @@ def save_to_file(word, filename):
           word = word.rstrip("\n")
           file.write(word + "," + str(len(word)) + "\n")
 
+# Download dictionary file if it doesn't already exist on disk.
+if not os.path.exists(dictionary_file):
+	urllib.request.urlretrieve("https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt",dictionary_file)
+
+# Loop through the dictionary, and add each word to CSV files as necessary.		  
 with open(dictionary_file, "r") as dictionary:
      for word in dictionary:
           if is_valid_word(word, valid_lowercase_characters): save_to_file(word, lowercase_file)
