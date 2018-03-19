@@ -24,11 +24,11 @@ for(i=0; i<films.length; i++)
 // If any unlimited screenings were found, send email
 if (filmList != "")
   {
-   var mailBody = "<b>New Unlimited screening detected!</b><br/><br/>" + filmList;
+   var mailBody = "<b>New Unlimited screening tickets on sale!</b><br/><br/>" + filmList;
    var emailConfig = {
   	"to": "your-email-address@example.org",
   	"fromName": "Cineworld Alerts",
-  	"subject": "New Unlimited screening detected!",
+  	"subject": "New Unlimited screening tickets on sale!",
   	"body": mailBody
    	};
 	return sendMail(emailConfig.to, emailConfig.fromName, emailConfig.subject, emailConfig.body); 
