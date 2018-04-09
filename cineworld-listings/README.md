@@ -22,8 +22,8 @@ Read the accompanying blog post: [Practical Automation: Cinema listings to my in
 
 1. Sign up for an account with [Scriptr](https://www.scriptr.io)
 1. Paste the contents of `cineworld-listings.js` into a new Scriptr script
-1. Locate the ID for the cinema that you wish to monitor. This will be a seven-digit number beginning with 101; you can locate the ID by looking at the source of the "Choose a cinema" dropdown on the Cineworld website.
-1. Update the variables in lines 9-12 of the cineworld-listings script, to reflect the cinema you're interested in, and where you want to deliver the email.
+1. Locate the ID for the cinema that you wish to monitor. This will be a four-digit number beginning with 8; you can locate the ID by looking at the source of the "Choose a cinema" dropdown on the Cineworld website.
+1. Update the variables in lines 7-10 of the cineworld-listings script, to reflect the cinema you're interested in, and where you want to deliver the email.
 1. Save the script, and run; the console will either indicate it's delivered an email, or tell you that the listings aren't available yet.
 1. Use Scriptr's "Schedule" menu to configure how frequently you want the script to run. For example: "Run every hour at 0, 15, 30, 45 minute(s) past the hour" will run the script every 15 minutes.
 
@@ -31,6 +31,7 @@ Read the accompanying blog post: [Practical Automation: Cinema listings to my in
 
 1. Initial version simply picked Saturday (the day which usually has most films showing) and announced when it found listings on that day, allowing me to manually visit the Cineworld website to check the full listings for the week.
 1. Refactored so that it iterates over every day in the upcoming week, compiling a complete list of upcoming films, and allowing me to spot films which are only showing on particular days.
+1. Modified the script to remember what films were being shown last week, so that it can highlight new releases
 
 ## How I could improve the script in the future
 
