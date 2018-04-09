@@ -13,6 +13,7 @@ var emailSubject = "Next week's Milton Keynes listings available!";
 if(resetStartDate || !storage.local.lastSuccess)
     {       
         storage.local.lastSuccess = getNextFriday();
+        storage.local.lastWeeksFilms = [];
     }
 
 var targetDate = new Date(storage.local.lastSuccess);
@@ -38,11 +39,15 @@ if(hasListings(cinemaId, startDateFormatted))
   			  return filmList.indexOf(item) == pos;
 		})       
         uniqueFilms.sort();
-        
+               
         // Convert list to HTML
         var emailFilmList = "";        
         for(i=0; i<uniqueFilms.length; i++)
   			{
+                if (storage.local.lastWeeksFilms.indexOf(uniqueFilms[i]) == -1)
+                    {
+                     emailFilmList += '[NEW] ';   
+                    }
     			emailFilmList += uniqueFilms[i] + '<br/>';
   			}      
         
@@ -54,6 +59,10 @@ if(hasListings(cinemaId, startDateFormatted))
   			"body": mailBody
    		};
         
+        // Store this week's films for cross-comparison next week
+        storage.local.lastWeeksFilms = uniqueFilms;
+
+        // Work out start date for next week
         var date = new Date(startDateFormatted);
         storage.local.lastSuccess = date.setDate(date.getDate() + 7);
         var targetDate = new Date(storage.local.lastSuccess);
