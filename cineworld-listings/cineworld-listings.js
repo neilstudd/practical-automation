@@ -1,15 +1,13 @@
 var http = require('http');
 
-var MILLISECONDS_IN_ONE_DAY = 24 * 60 * 60 * 1000;
-
 // ------------------------------------------------------------------
 //  Customise the following to control which cinema you're watching,
 //  and who gets the alert!
 // ------------------------------------------------------------------
-var cinemaId = 1010861;
+var cinemaId = 8098;
+var resetStartDate = false; // Set this to 'true' to reset start date
 var emailRecipient = "your-email-address@example.org";
 var emailSubject = "Next week's Milton Keynes listings available!";
-var resetStartDate = false; // Set this to 'true' if you ever need to reset start date
 // ------------------------------------------------------------------
 
 if(resetStartDate || !storage.local.lastSuccess)
@@ -18,21 +16,21 @@ if(resetStartDate || !storage.local.lastSuccess)
     }
 
 var targetDate = new Date(storage.local.lastSuccess);
-var startDateInMs = targetDate.getTime();
-
+var startDateFormatted = targetDate.toISOString().substring(0,10);
 console.log("Checking whether films have been announced for " + targetDate + "...");
 
 // Only proceed if films have been announced
-if(hasListings(cinemaId, startDateInMs))
+if(hasListings(cinemaId, startDateFormatted))
     {
         var filmList = [];
-        dateToCheck = startDateInMs;
+        dateToCheck = startDateFormatted;
         
         // Go through the seven days of listings, building list of films.
         for(day=1;day<=7;day++)
             {
-                addFilmsToList(cinemaId, dateToCheck);
-                dateToCheck+=MILLISECONDS_IN_ONE_DAY;
+                addFilmsToList(cinemaId, dateToCheck);               
+                currentDate = new Date(dateToCheck);
+                dateToCheck = new Date(currentDate.setDate(currentDate.getDate() + 1)).toISOString().substring(0,10);
             }
         
         // Dedupe and sort the film list
@@ -56,7 +54,7 @@ if(hasListings(cinemaId, startDateInMs))
   			"body": mailBody
    		};
         
-        var date = new Date(startDateInMs);
+        var date = new Date(startDateFormatted);
         storage.local.lastSuccess = date.setDate(date.getDate() + 7);
         var targetDate = new Date(storage.local.lastSuccess);
 		console.log("Mail sent, now awaiting announcements for " + targetDate);
@@ -74,7 +72,7 @@ function addFilmsToList(cinemaId, dateToCheck) {
     films = getFilms(cinemaId, dateToCheck);
     for(i=0; i<films.length; i++)
        {
-           filmList.push(films[i].n);
+           filmList.push(films[i].name);
        }
 }
 
@@ -88,10 +86,10 @@ function hasListings(cinemaId, dateToCheck) {
 // Helper for retrieving film listings
 function getFilms(cinemaId, dateToCheck) {
     var requestConfig = {
-  		url: 'https://www.cineworld.co.uk/pgm-site?si=' + cinemaId + '&max=365&bd=' + dateToCheck + '&attrs=2D%2C3D%2CIMAX%2CViP%2CVIP%2CDBOX%2C4DX%2CM4J%2CSS'
-	};
+  		url: 'https://www.cineworld.co.uk/uk/data-api-service/v1/quickbook/10108/film-events/in-cinema/' + cinemaId + '/at-date/' + dateToCheck
+    };
 	var response = http.request(requestConfig);
-    return JSON.parse(response.body);   
+    return JSON.parse(response.body).body.films;   
 }
 
 // Work out next Friday, for reset purposes
