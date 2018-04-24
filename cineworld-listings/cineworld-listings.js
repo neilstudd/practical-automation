@@ -4,7 +4,7 @@ var http = require('http');
 //  Customise the following to control which cinema you're watching,
 //  and who gets the alert!
 // ------------------------------------------------------------------
-var cinemaId = 8098;
+var cinemaId = 8071;
 var resetStartDate = false; // Set this to 'true' to reset start date
 var emailRecipient = "your-email-address@example.org";
 var emailSubject = "Next week's Milton Keynes listings available!";
@@ -51,7 +51,7 @@ if(hasListings(cinemaId, startDateFormatted))
     			emailFilmList += uniqueFilms[i] + '<br/>';
   			}      
         
-		var mailBody = "<b>Here are all of next week's films, check website for date/times!</b><br/><br/>" + emailFilmList;   		
+		var mailBody = "<b>Here are all of the films for the week of " + targetDate + ", check website for date/times!</b><br/><br/>" + emailFilmList;   		
         var emailConfig = {
   			"to": emailRecipient,
   			"fromName": "Cineworld Alerts",
@@ -63,8 +63,7 @@ if(hasListings(cinemaId, startDateFormatted))
         storage.local.lastWeeksFilms = uniqueFilms;
 
         // Work out start date for next week
-        var date = new Date(startDateFormatted);
-        storage.local.lastSuccess = date.setDate(date.getDate() + 7);
+        storage.local.lastSuccess = currentDate;
         var targetDate = new Date(storage.local.lastSuccess);
 		console.log("Mail sent, now awaiting announcements for " + targetDate);
         
@@ -85,11 +84,11 @@ function addFilmsToList(cinemaId, dateToCheck) {
        }
 }
 
-// Consider that a date has listings if there are more than 3 films showing 
+// Consider that a date has listings if there are more than 4 films showing 
 // (as there might already be a couple announced for preorders or special events)
 function hasListings(cinemaId, dateToCheck) {
     films = getFilms(cinemaId, dateToCheck); 
-    return films.length > 3;
+    return films.length > 4;
 }
 
 // Helper for retrieving film listings
