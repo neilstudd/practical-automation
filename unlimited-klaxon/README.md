@@ -17,7 +17,7 @@
 
 1. Sign up for an account with [Scriptr](https://www.scriptr.io)
 1. Paste the contents of `unlimited-klaxon.js` into a new Scriptr script
-1. Modify the email address on line 35 to reflect where you'd like to send the email.
+1. Modify the email address on line 28 to reflect where you'd like to send the email.
 1. Save the script, and run; an email will be sent immediately for any already-announced screenings.
 1. Optionally, run the script again; you'll see that it says "No new screenings found" and then lists the screenings that it already knows about.
 1. Use Scriptr's "Schedule" menu to configure how frequently you want the script to run. For example: "Run every hour".
