@@ -1,29 +1,22 @@
 var http = require('http');
 var requestConfig = {
-  url: 'https://www.cineworld.co.uk/q?live=1&q=unlimited'
+  url: 'https://www.cineworld.co.uk/q?live=1&json=1&q=unlimited&start=0&max=20'
 };
 var response = http.request(requestConfig);
-var responseHtml =(response.body);
+var films = JSON.parse(response.body).feats;
+
 var filmList = "";
 
 // DEBUG: Nuke the list of known films.
 // storage.local.knownScreenings = [];
 
-// Response HTML structured as follows:
-// <li><a href="/films/unsane-unlimited-screening">Unsane: Unlimited Screening</a></li>
-// ...get the link URL and link text out of it
-var matches = [];
-responseHtml.replace(/[^<]*(<a href="([^"]+)">([^<]+)<\/a>)/g, function () {
-    matches.push(Array.prototype.slice.call(arguments, 1, 4))
-});
-
 // Check each film to see if we already know about it
-for (index = 0; index < matches.length; ++index) {
-    filmName = matches[index][2];
+for (index = 0; index < films.length; ++index) {
+    filmName = films[index].n;
     if(storage.local.knownScreenings.indexOf(filmName) == -1)
     {
-	    filmList += matches[index][2] + ' - https://www.cineworld.co.uk' + matches[index][1] + '<br/>';
-        storage.local.knownScreenings.push(matches[index][2]);
+	    filmList += films[index].reldatef + ': ' + films[index].n + ' - https://www.cineworld.co.uk' + films[index].url + '<br/>';
+        storage.local.knownScreenings.push(films[index].n);
     }    
 }
 
@@ -43,4 +36,3 @@ else
     {
         return "No new unlimited screenings found. Current known screenings: " + storage.local.knownScreenings.toString();
     }
-
