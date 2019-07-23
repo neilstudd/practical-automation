@@ -14,9 +14,14 @@ var filmList = "";
 for (index = 0; index < films.length; ++index) {
     filmName = films[index].n;
     if(storage.local.knownScreenings.indexOf(filmName) == -1)
-    {
-	    filmList += films[index].reldatef + ': ' + films[index].n + ' - https://www.cineworld.co.uk' + films[index].url + '<br/>';
-        storage.local.knownScreenings.push(films[index].n);
+    {  
+        // Check if the film is in the future, because sometimes Cineworld pushes random olde films onto the stack?!
+        var thisFilmDateTime = Date.parse(films[index].reldatef);
+        var currentDateTime = Date.now();
+        if (thisFilmDateTime > currentDateTime) {
+	    	filmList += films[index].reldatef + ': ' + films[index].n + ' - https://www.cineworld.co.uk' + films[index].url + '<br/>';
+        	storage.local.knownScreenings.push(films[index].n);
+        }
     }    
 }
 
